@@ -536,10 +536,12 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             if (directory.Recursive)
             {
                 var subFolders = directory.ParentTemplate.Connector.GetFolders(directory.Src);
-                foreach (var folder in subFolders)
+                var src = directory.Src;
+                var folder = directory.Folder;
+                foreach (var subFolder in subFolders)
                 {
-                    directory.Src += @"\" + folder;
-                    directory.Folder += @"\" + folder;
+                    directory.Src = src + @"\" + subFolder;
+                    directory.Folder = folder + @"\" + subFolder;
                     result.AddRange(directory.GetDirectoryFiles(metadataProperties));
                 }
             }
