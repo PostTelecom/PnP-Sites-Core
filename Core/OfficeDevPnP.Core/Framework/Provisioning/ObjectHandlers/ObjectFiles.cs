@@ -50,11 +50,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                 foreach (var file in template.Files.Union(directoryFiles))
                 {
+                    var webToUpload = web;
                     var folderName = parser.ParseString(file.Folder);
 
                     if (folderName.ToLower().StartsWith((web.ServerRelativeUrl.ToLower())))
                     {
                         folderName = folderName.Substring(web.ServerRelativeUrl.Length);
+                    }
+                    else if (folderName.ToLower().StartsWith((context.Site.RootWeb.ServerRelativeUrl.ToLower())))
+                    {
+                        folderName = folderName.Substring(context.Site.RootWeb.ServerRelativeUrl.Length);
+                        webToUpload = context.Site.RootWeb;
                     }
 
                     if (SkipFile(isNoScriptSite, file.Src, folderName))
