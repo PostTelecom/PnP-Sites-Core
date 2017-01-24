@@ -828,6 +828,11 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Web References\UPAWebService\UserProfileService.wsdl" />
+    <None Include="_CreateNewNuGetPackage\Config.ps1" />
+    <None Include="_CreateNewNuGetPackage\DoNotModify\CreateNuGetPackage.ps1" />
+    <None Include="_CreateNewNuGetPackage\DoNotModify\New-NuGetPackage.ps1" />
+    <None Include="_CreateNewNuGetPackage\DoNotModify\UploadNuGetPackage.ps1" />
+    <None Include="_CreateNewNuGetPackage\RunMeToUploadNuGetPackage.cmd" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -906,16 +911,17 @@
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\STS0Template.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Framework\Provisioning\BaseTemplates\v16_0\BDR0Template.xml" />
-    <Content Include="Framework\Provisioning\BaseTemplates\v16_0\BICENTERSITE0Template.xml" />
-    <Content Include="Framework\Provisioning\BaseTemplates\v16_0\BLOG0Template.xml" />
-    <Content Include="Framework\Provisioning\BaseTemplates\v16_0\CMSPUBLISHING0Template.xml" />
-    <Content Include="Framework\Provisioning\BaseTemplates\v16_0\COMMUNITYPORTAL0Template.xml" />
-    <Content Include="Framework\Provisioning\BaseTemplates\v16_0\OFFILE1Template.xml" />
-    <Content Include="Framework\Provisioning\BaseTemplates\v16_0\PROJECTSITE0Template.xml" />
-    <Content Include="Framework\Provisioning\BaseTemplates\v16_0\SRCHCENTERLITE0Template.xml" />
-    <Content Include="Framework\Provisioning\BaseTemplates\v16_0\STS1Template.xml" />
-    <Content Include="Framework\Provisioning\BaseTemplates\v16_0\VISPRUS0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\BDR0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\BICENTERSITE0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\BLOG0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\CMSPUBLISHING0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\COMMUNITYPORTAL0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\OFFILE1Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\PROJECTSITE0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\SRCHCENTERLITE0Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\STS1Template.xml" />
+    <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_0\VISPRUS0Template.xml" />
+    <None Include="_CreateNewNuGetPackage\DoNotModify\NuGet.exe" />
     <EmbeddedResource Include="Framework\Provisioning\BaseTemplates\v16_1\GROUP0Template.xml" />
     <Content Include="pnp.ico" />
     <None Include="Resources\SP-Responsive-UI_CSS.css" />
@@ -938,8 +944,10 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>REM Create a NuGet package for this project and place the .nupkg file in the project's output directory.
+REM If you see this in Visual Studio's Error List window, check the Output window's Build tab for the actual error.
+ECHO Creating NuGet package in Post-Build event...
+PowerShell -NoProfile -ExecutionPolicy Bypass -Command "&amp; '$(ProjectDir)_CreateNewNuGetPackage\DoNotModify\CreateNuGetPackage.ps1' -ProjectFilePath '$(ProjectPath)' -OutputDirectory '$(TargetDir)' -BuildConfiguration '$(ConfigurationName)' -BuildPlatform '$(PlatformName)'"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
